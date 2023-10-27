@@ -1,8 +1,3 @@
-## AWS
-
-aws s3 ls tomasv.co.uk
-aws s3 sync --delete ./build s3://tomasv.co.uk
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
