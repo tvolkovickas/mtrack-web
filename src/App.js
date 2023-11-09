@@ -1,50 +1,81 @@
 import React, { useState, useEffect } from "react";
-import cn from "classnames";
+import CssBaseline from "@mui/material/CssBaseline";
+import {
+  Unstable_Grid2 as Grid,
+  Container,
+  Button,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Box,
+  Typography,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 import styles from "./style.module.css";
 
 const Mtrack = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [destination, setDestination] = useState(null);
   const [counter, setCounter] = useState(null);
-  const displayItems = [
+  const items = [
     "3 mm",
-    "Fine Dust",
+    "FINE DUST",
+    "SLURRY DUST",
     "6 mm",
     "10 mm",
     "14 mm",
     "20 mm",
     "28 mm",
-    "",
-    "Slurry Dust",
+    "40 mm",
+    "RAIL BALLAST",
     "6 mm BEST",
     "10 mm BEST",
     "14 mm BEST",
     "20 mm BEST",
-    "",
-    "40 mm",
-    "Rail + Ballas",
-    "Formpave",
-    "Type 3",
-    "Blend 66",
-    "75 / 40",
-    "20 / 5",
+    "TYPE 1",
+    "TYPE 3",
+    "BLEND 66",
+    "BLEND 20/5",
+    "FORMPAVE",
+    "75/40",
+    "OVERSIZED",
     "ROAD BLEND",
-    "WGS",
-    "Oversized",
-    "6F5",
-    "10S/D",
-    "6S/D",
+    "WASHED GRANIT SAND",
+    "GF5",
+    "6 mm SURFACE DRESSING",
+    "10 mm SURFACE DRESSING",
+    "",
     "",
   ];
+
+  const destinationItems = [
+    "STOCK",
+    "BENNY",
+    "WASHPLANT",
+    "ST HEAVENS",
+    "EXTENSION",
+    "OTHER",
+  ];
+
   const stopCounter = () => {
     setCounter(null);
     setSelectedItem(null);
+    setDestination(null);
+  };
+  const startCounter = (destination) => {
+    setDestination(destination);
+    setCounter(0);
   };
   const selectItem = (item) => {
     if (item === "") {
       return;
     }
-    setCounter(0);
     setSelectedItem(item);
   };
 
@@ -60,47 +91,128 @@ const Mtrack = () => {
     };
   }, [counter]);
   return (
-    <div>
-      {selectedItem && (
-        <div className={styles.on} onClick={stopCounter}>
-          <div className={styles.selectedItem}>{selectedItem}</div>
-          {counter !== null && (
-            <div className={styles.counter}>
-              <span>
-                {Math.floor((counter % (60 * 60 * 24)) / (60 * 60))
-                  .toString()
-                  .padStart(2, "0")}
-              </span>
-              <span className={styles.blinker}>:</span>
-              <span>
-                {Math.floor((counter % (60 * 60)) / 60)
-                  .toString()
-                  .padStart(2, "0")}
-              </span>
-              <span className={styles.blinker}>:</span>
-              <span>
-                {Math.floor(counter % 60)
-                  .toString()
-                  .padStart(2, "0")}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-      {!selectedItem && (
-        <div className={styles.container}>
-          {displayItems.map((item, index) => (
-            <div
-              key={index}
-              className={cn(styles.gridItem)}
-              onClick={() => selectItem(item)}
+    <Box>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            MTrack
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container sx={{ marginTop: "10px" }}>
+        {!selectedItem && (
+          <Grid container spacing={2} disableEqualOverflow columns={8}>
+            {items.map((item, index) => (
+              <Grid xs={4} sm={2} key={index}>
+                <Button
+                  fullWidth
+                  sx={{ height: "100%" }}
+                  variant="contained"
+                  onClick={() => selectItem(item)}
+                >
+                  {item}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+        {selectedItem && !destination && (
+          <Grid container spacing={2} disableEqualOverflow columns={3}>
+            <Grid xs={3}>
+              <div className={styles.selectedItem}>{selectedItem}</div>
+            </Grid>
+            {destinationItems.map((item, index) => (
+              <Grid xs={1} key={index}>
+                <Button
+                  fullWidth
+                  sx={{ height: "100%" }}
+                  variant="contained"
+                  color="success"
+                  onClick={() => startCounter(item)}
+                >
+                  {item}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
+        {selectedItem && destination && (
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={stopCounter}
+            color="success"
+          >
+            <Grid
+              container
+              disableEqualOverflow
+              columns={3}
+              sx={{ width: "100%" }}
             >
-              {item}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+              <Grid
+                xs={3}
+                lg={1}
+                className={styles.destination}
+                sx={{
+                  borderRight: { lg: "1px solid white" },
+                  borderBottom: { xs: "1px solid white", lg: "none" },
+                }}
+              >
+                {selectedItem}
+              </Grid>
+              <Grid xs={3} lg={1} className={styles.destination}>
+                To
+              </Grid>
+              <Grid
+                xs={3}
+                lg={1}
+                className={styles.destination}
+                sx={{
+                  borderLeft: { lg: "1px solid white" },
+                  borderTop: { xs: "1px solid white", lg: "none" },
+                }}
+              >
+                {destination}
+              </Grid>
+              <Grid xs={3} sx={{ borderTop: "1px solid white" }}>
+                {counter !== null && (
+                  <div className={styles.counter}>
+                    <div>
+                      {Math.floor((counter % (60 * 60 * 24)) / (60 * 60))
+                        .toString()
+                        .padStart(2, "0")}
+                    </div>
+                    <div className={styles.blinker}>:</div>
+                    <div>
+                      {Math.floor((counter % (60 * 60)) / 60)
+                        .toString()
+                        .padStart(2, "0")}
+                    </div>
+                    <div className={styles.blinker}>:</div>
+                    <div>
+                      {Math.floor(counter % 60)
+                        .toString()
+                        .padStart(2, "0")}
+                    </div>
+                  </div>
+                )}
+              </Grid>
+            </Grid>
+          </Button>
+        )}
+      </Container>
+    </Box>
   );
 };
 
