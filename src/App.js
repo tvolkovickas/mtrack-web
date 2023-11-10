@@ -9,6 +9,7 @@ import {
   IconButton,
   Box,
   Typography,
+  TextField,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -23,6 +24,7 @@ const Mtrack = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [destination, setDestination] = useState(null);
   const [counter, setCounter] = useState(null);
+  const [otherDestination, setOtherDestination] = useState(null);
   const items = [
     "3 mm",
     "FINE DUST",
@@ -69,6 +71,14 @@ const Mtrack = () => {
     setDestination(null);
   };
   const startCounter = (destination) => {
+    if (destination === "OTHER") {
+      setOtherDestination(destination);
+    } else {
+      setDestinationAndStartCounter(destination);
+    }
+  };
+  const setDestinationAndStartCounter = (destination) => {
+    setOtherDestination(null);
     setDestination(destination);
     setCounter(0);
   };
@@ -126,7 +136,28 @@ const Mtrack = () => {
             ))}
           </Grid>
         )}
-        {selectedItem && !destination && (
+
+        {otherDestination && (
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <TextField
+              id="outlined-basic"
+              label={otherDestination}
+              variant="outlined"
+              onChange={(event) => setOtherDestination(event.target.value)}
+            />
+            <Button
+              sx={{ height: "100%", marginLeft: "15px" }}
+              variant="contained"
+              color="success"
+              size="large"
+              onClick={() => setDestinationAndStartCounter(otherDestination)}
+            >
+              Set Destination
+            </Button>
+          </Box>
+        )}
+
+        {selectedItem && !destination && !otherDestination && (
           <Grid container spacing={2} disableEqualOverflow columns={3}>
             <Grid xs={3}>
               <div className={styles.selectedItem}>{selectedItem}</div>
@@ -147,7 +178,7 @@ const Mtrack = () => {
           </Grid>
         )}
 
-        {selectedItem && destination && (
+        {selectedItem && destination && !otherDestination && (
           <Button
             fullWidth
             variant="contained"
