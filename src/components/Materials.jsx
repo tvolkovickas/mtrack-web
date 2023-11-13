@@ -38,7 +38,10 @@ const Materials = ({ selectItem }) => {
         <Grid xs={4} sm={2} key={index}>
           <Button
             fullWidth
-            sx={{ height: "100%" }}
+            sx={{
+              height: "100%",
+              filter: `brightness(${1.0 - index * 0.015})`,
+            }}
             variant="contained"
             onClick={() => selectItem(item)}
           >

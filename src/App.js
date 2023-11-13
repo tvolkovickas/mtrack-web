@@ -8,7 +8,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -69,20 +69,31 @@ const Mtrack = () => {
     setCurrentStage(STAGES.DESTINATION);
   };
 
+  const goBack = () => {
+    setMaterial(null);
+    setDestination(null);
+    setCurrentStage(STAGES.MATERIALS);
+  };
+
   return (
     <Box>
       <CssBaseline />
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+          {currentStage !== STAGES.MATERIALS &&
+            currentStage !== STAGES.TIMER && (
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={goBack}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            )}
+
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             MTrack
           </Typography>
