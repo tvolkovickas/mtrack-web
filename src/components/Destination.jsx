@@ -21,7 +21,18 @@ const Destination = ({ selectedItem, startCounter }) => {
         <Grid xs={1} key={index}>
           <Button
             fullWidth
-            sx={{ height: "100%" }}
+            sx={{
+              height: "100%",
+              fontSize: {
+                md: "24px",
+              },
+              paddingTop: {
+                md: "15px",
+              },
+              paddingBottom: {
+                md: "15px",
+              },
+            }}
             variant="contained"
             color="success"
             onClick={() => startCounter(item)}

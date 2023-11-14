@@ -40,7 +40,15 @@ const Materials = ({ selectItem }) => {
             fullWidth
             sx={{
               height: "100%",
-              filter: `brightness(${1.0 - index * 0.015})`,
+              fontSize: {
+                md: "24px",
+              },
+              paddingTop: {
+                md: "15px",
+              },
+              paddingBottom: {
+                md: "15px",
+              },
             }}
             variant="contained"
             onClick={() => selectItem(item)}
